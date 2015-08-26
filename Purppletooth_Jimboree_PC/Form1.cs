@@ -102,7 +102,15 @@ namespace Purppletooth_Jimboree_PC
             {
                 try
                 {
-                    _serialPort.WriteLine(out_str);
+                    int index;
+                    char[] str=new char[out_str.Length+1];
+                    out_str.CopyTo(0,str,0,out_str.Length);
+                    str[out_str.Length]='\x0d';    
+                    for (index=0; index<str.Length; index++)
+                    {
+                         _serialPort.Write(str,index,1);
+                        Thread.Sleep(1);
+                    }
                 }
                 catch (TimeoutException timeout)
                 {
