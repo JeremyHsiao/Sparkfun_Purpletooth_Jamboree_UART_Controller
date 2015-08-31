@@ -339,6 +339,11 @@ namespace Purppletooth_Jimboree_PC
         {
             Serial_UpdateBaudRate();
         }
+
+        private void btnGetConfig_click(object sender, EventArgs e)
+        {
+            Serial_WriteStringWithPause("config\x0d");
+        }
     }
 
  

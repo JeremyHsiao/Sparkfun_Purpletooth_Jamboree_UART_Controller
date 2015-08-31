@@ -35,6 +35,7 @@
             this.txtStringToSerial = new System.Windows.Forms.TextBox();
             this.btnSendStringToUART = new System.Windows.Forms.Button();
             this.lstBaudRate = new System.Windows.Forms.ListBox();
+            this.btnGetConfig = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // listBox1
@@ -110,11 +111,22 @@
             this.lstBaudRate.ValueMember = "int";
             this.lstBaudRate.SelectedIndexChanged += new System.EventHandler(this.lstBaudRate_SelectedIndexChanged);
             // 
+            // btnGetConfig
+            // 
+            this.btnGetConfig.Location = new System.Drawing.Point(299, 12);
+            this.btnGetConfig.Name = "btnGetConfig";
+            this.btnGetConfig.Size = new System.Drawing.Size(67, 40);
+            this.btnGetConfig.TabIndex = 7;
+            this.btnGetConfig.Text = "Get Config";
+            this.btnGetConfig.UseVisualStyleBackColor = true;
+            this.btnGetConfig.Click += new System.EventHandler(this.btnGetConfig_click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(494, 433);
+            this.Controls.Add(this.btnGetConfig);
             this.Controls.Add(this.lstBaudRate);
             this.Controls.Add(this.btnSendStringToUART);
             this.Controls.Add(this.txtStringToSerial);
@@ -140,6 +152,7 @@
         private System.Windows.Forms.TextBox txtStringToSerial;
         private System.Windows.Forms.Button btnSendStringToUART;
         private System.Windows.Forms.ListBox lstBaudRate;
+        private System.Windows.Forms.Button btnGetConfig;
     }
 }
 
