@@ -26,6 +26,7 @@ namespace Purppletooth_Jimboree_PC
             _serialPort = new SerialPort();
             Serial_InitialSetting();
             Serial_UpdatePortName();
+            Serial_UpdateBaudRate();
             DisableSendStringButton();
         }
 
@@ -33,7 +34,7 @@ namespace Purppletooth_Jimboree_PC
         {
             // Allow the user to set the appropriate properties.
             _serialPort.PortName = "COM42";
-            _serialPort.BaudRate = 9600;
+            _serialPort.BaudRate = 9600; // as default;
             _serialPort.Parity = Parity.None;
             _serialPort.DataBits = 8;
             _serialPort.StopBits = StopBits.One;
@@ -45,6 +46,19 @@ namespace Purppletooth_Jimboree_PC
             _serialPort.WriteTimeout = 500;
         }
 
+        private void Serial_UpdateBaudRate()
+        {
+            if ((lstBaudRate.SelectedIndex >= 0) && (lstBaudRate.SelectedIndex <= lstBaudRate.Items.Count))
+            {
+               //
+            }
+            else
+            {
+                lstBaudRate.SelectedIndex = 0;
+            }
+            _serialPort.BaudRate = Convert.ToInt32(lstBaudRate.SelectedItem.ToString());
+        }
+
         private void Serial_UpdatePortName()
         {
             listBox1.Items.Clear();
@@ -54,7 +68,8 @@ namespace Purppletooth_Jimboree_PC
             }
             if (listBox1.Items.Count > 0)
             {
-                listBox1.SelectedIndex = listBox1.Items.Count - 1;
+                // listBox1.SelectedIndex = listBox1.Items.Count - 1;
+                listBox1.SelectedIndex = 0;     // this can be modified to preferred default
                 EnableConnectButton();
                 UpdateToConnectButton();
             }
@@ -96,19 +111,18 @@ namespace Purppletooth_Jimboree_PC
             return ret;
         }
 
-        private void Serial_WriteStringWithNewLine(string out_str)
+        private void Serial_WriteStringWithPause(string out_str)
         {
             if (_serialPort.IsOpen == true)
             {
                 try
                 {
                     int index;
-                    char[] str=new char[out_str.Length+1];
-                    out_str.CopyTo(0,str,0,out_str.Length);
-                    str[out_str.Length]='\x0d';    
-                    for (index=0; index<str.Length; index++)
+                    char[] uart_str=new char[out_str.Length];
+                    out_str.CopyTo(0, uart_str, 0, out_str.Length);
+                    for (index = 0; index < uart_str.Length; index++)
                     {
-                         _serialPort.Write(str,index,1);
+                        _serialPort.Write(uart_str, index, 1);
                         Thread.Sleep(1);
                     }
                 }
@@ -119,7 +133,7 @@ namespace Purppletooth_Jimboree_PC
             }
             else
             {
-                AppendSerialMessageLog("COM port is not connected!\n");
+                AppendSerialMessageLog("COM is closed and cannot send this string " + out_str + "\n");
             }
         }
 
@@ -252,6 +266,7 @@ namespace Purppletooth_Jimboree_PC
                     string curItem = listBox1.SelectedItem.ToString();
                     if (Serial_OpenPort(curItem) == true)
                     {
+                        Serial_UpdateBaudRate(); 
                         UpdateToDisconnectButton();
                         DisableRefreshCOMButton();
                         EnableSendStringButton();
@@ -282,14 +297,24 @@ namespace Purppletooth_Jimboree_PC
             }
         }
 
+        private void ProcessStringSendUart(string inp_str)
+        {
+            if (inp_str != "")
+            {
+                inp_str += '\x0d';
+                richTextBox1.AppendText("CMD==> "+inp_str);
+                Serial_WriteStringWithPause(inp_str);
+            }
+            else
+            {
+                // Empty string -> do nothing
+            }
+        }
+
         private void btnSendStringToUART_Click(object sender, System.EventArgs e)
         {
             string temp_str = txtStringToSerial.Text;
-
-            if(temp_str != "")
-            {
-                Serial_WriteStringWithNewLine(temp_str);
-            }
+            ProcessStringSendUart(temp_str);
         }
 
         private void txtStringToSerial_KeyDown(object sender, KeyEventArgs e)
@@ -297,11 +322,7 @@ namespace Purppletooth_Jimboree_PC
             if (e.KeyCode == Keys.Enter)
             {
                 string temp_str = txtStringToSerial.Text;
-
-                if (temp_str != "")
-                {
-                    Serial_WriteStringWithNewLine(temp_str);
-                }
+                ProcessStringSendUart(temp_str);
             }
         }
 
@@ -312,6 +333,11 @@ namespace Purppletooth_Jimboree_PC
                 Stop_SerialReadThread();
             }
             UpdateToConnectButton();
+        }
+
+        private void lstBaudRate_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Serial_UpdateBaudRate();
         }
     }
 

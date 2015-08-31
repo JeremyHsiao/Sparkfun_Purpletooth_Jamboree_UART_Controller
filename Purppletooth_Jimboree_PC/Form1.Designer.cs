@@ -34,6 +34,7 @@
             this.btnConnectionControl = new System.Windows.Forms.Button();
             this.txtStringToSerial = new System.Windows.Forms.TextBox();
             this.btnSendStringToUART = new System.Windows.Forms.Button();
+            this.lstBaudRate = new System.Windows.Forms.ListBox();
             this.SuspendLayout();
             // 
             // listBox1
@@ -47,6 +48,7 @@
             // 
             // richTextBox1
             // 
+            this.richTextBox1.BackColor = System.Drawing.SystemColors.ControlLightLight;
             this.richTextBox1.Location = new System.Drawing.Point(12, 64);
             this.richTextBox1.Name = "richTextBox1";
             this.richTextBox1.ReadOnly = true;
@@ -93,11 +95,27 @@
             this.btnSendStringToUART.UseVisualStyleBackColor = true;
             this.btnSendStringToUART.Click += new System.EventHandler(this.btnSendStringToUART_Click);
             // 
+            // lstBaudRate
+            // 
+            this.lstBaudRate.DisplayMember = "int";
+            this.lstBaudRate.FormattingEnabled = true;
+            this.lstBaudRate.ItemHeight = 12;
+            this.lstBaudRate.Items.AddRange(new object[] {
+            "9600",
+            "115200"});
+            this.lstBaudRate.Location = new System.Drawing.Point(224, 12);
+            this.lstBaudRate.Name = "lstBaudRate";
+            this.lstBaudRate.Size = new System.Drawing.Size(69, 40);
+            this.lstBaudRate.TabIndex = 6;
+            this.lstBaudRate.ValueMember = "int";
+            this.lstBaudRate.SelectedIndexChanged += new System.EventHandler(this.lstBaudRate_SelectedIndexChanged);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(494, 433);
+            this.Controls.Add(this.lstBaudRate);
             this.Controls.Add(this.btnSendStringToUART);
             this.Controls.Add(this.txtStringToSerial);
             this.Controls.Add(this.btnConnectionControl);
@@ -121,6 +139,7 @@
         private System.Windows.Forms.Button btnConnectionControl;
         private System.Windows.Forms.TextBox txtStringToSerial;
         private System.Windows.Forms.Button btnSendStringToUART;
+        private System.Windows.Forms.ListBox lstBaudRate;
     }
 }
 
