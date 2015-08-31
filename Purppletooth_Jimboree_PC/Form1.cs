@@ -179,6 +179,19 @@ namespace Purppletooth_Jimboree_PC
             {
                 try
                 {
+                        string message = _serialPort.ReadLine(); 
+                        this.AppendSerialMessageLog(message);
+                }
+                catch (TimeoutException) { }
+            }
+        }
+
+        public void ReadSerialPortThread_char()
+        {
+            while (_continue_serial_read_write)
+            {
+                try
+                {
                     int DataLength = _serialPort.BytesToRead;
                     if (DataLength > 0)
                     {
@@ -343,7 +356,16 @@ namespace Purppletooth_Jimboree_PC
         private void btnGetConfig_click(object sender, EventArgs e)
         {
             Serial_WriteStringWithPause("config\x0d");
+            //_serialPort.Readline();
+
         }
+
+        private void ParseLine(string input_str, ref string item, ref string value)
+        {
+            string[] words;
+            words = input_str.Split(default(string[]), 2, StringSplitOptions.RemoveEmptyEntries);
+        }
+
     }
 
  

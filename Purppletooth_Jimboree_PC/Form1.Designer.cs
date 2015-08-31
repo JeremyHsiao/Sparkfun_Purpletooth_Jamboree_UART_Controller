@@ -100,22 +100,23 @@
             // 
             this.lstBaudRate.DisplayMember = "int";
             this.lstBaudRate.FormattingEnabled = true;
+            this.lstBaudRate.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.lstBaudRate.ItemHeight = 12;
             this.lstBaudRate.Items.AddRange(new object[] {
             "9600",
             "115200"});
             this.lstBaudRate.Location = new System.Drawing.Point(224, 12);
             this.lstBaudRate.Name = "lstBaudRate";
-            this.lstBaudRate.Size = new System.Drawing.Size(69, 40);
+            this.lstBaudRate.Size = new System.Drawing.Size(43, 40);
             this.lstBaudRate.TabIndex = 6;
             this.lstBaudRate.ValueMember = "int";
             this.lstBaudRate.SelectedIndexChanged += new System.EventHandler(this.lstBaudRate_SelectedIndexChanged);
             // 
             // btnGetConfig
             // 
-            this.btnGetConfig.Location = new System.Drawing.Point(299, 12);
+            this.btnGetConfig.Location = new System.Drawing.Point(273, 12);
             this.btnGetConfig.Name = "btnGetConfig";
-            this.btnGetConfig.Size = new System.Drawing.Size(67, 40);
+            this.btnGetConfig.Size = new System.Drawing.Size(48, 40);
             this.btnGetConfig.TabIndex = 7;
             this.btnGetConfig.Text = "Get Config";
             this.btnGetConfig.UseVisualStyleBackColor = true;
