@@ -172,18 +172,71 @@ namespace Purppletooth_Jimboree_PC
 
         static bool _continue_serial_read_write=false;
         static Thread readThread = null;
+        static bool _readline_data_enqueue = false;
+        private Queue<string> UART_MSG = new Queue<string>();
+        static bool _readline_timeout_flag = false;
 
         public void ReadSerialPortThread()
         {
             while (_continue_serial_read_write)
             {
-                try
+                if (_readline_data_enqueue == true)
                 {
-                        string message = _serialPort.ReadLine(); 
-                        this.AppendSerialMessageLog(message);
+                    try
+                    {
+                        string message = _serialPort.ReadLine();
+                        //this.AppendSerialMessageLog(message);
+                        UART_MSG.Enqueue(message);
+                    }
+                    catch (TimeoutException)
+                    {
+                        Set_ReadLine_Timeout_Flag();
+                        Disable_ReadLine_Queue();
+                    }
                 }
-                catch (TimeoutException) { }
+                else
+                {
+                    try
+                    {
+                        int DataLength = _serialPort.BytesToRead;
+                        if (DataLength > 0)
+                        {
+                            string message = _serialPort.ReadExisting();
+                            this.AppendSerialMessageLog(message);
+                        }
+                    }
+                    catch (TimeoutException)
+                    {
+                    }
+                }
             }
+        }
+
+        private void Clear_ReadLine_Timeout_Flag()
+        {
+            _readline_timeout_flag = false;
+        }
+
+        private void Set_ReadLine_Timeout_Flag()
+        {
+            _readline_timeout_flag = true;
+        }
+
+        private bool Get_ReadLine_Timeout_Flag()
+        {
+            return (_readline_timeout_flag == true ? true : false);
+        }
+
+        private void Enable_ReadLine_Queue()
+        {
+            _readline_data_enqueue = true;
+            _serialPort.ReadTimeout = 1000;
+        }
+
+        private void Disable_ReadLine_Queue()
+        {
+            _readline_data_enqueue = false;
+            _serialPort.ReadTimeout = SerialPort.InfiniteTimeout;
         }
 
         public void ReadSerialPortThread_char()
@@ -355,15 +408,25 @@ namespace Purppletooth_Jimboree_PC
 
         private void btnGetConfig_click(object sender, EventArgs e)
         {
+            Enable_ReadLine_Queue();
+            Clear_ReadLine_Timeout_Flag();
             Serial_WriteStringWithPause("config\x0d");
-            //_serialPort.Readline();
+            while (Get_ReadLine_Timeout_Flag() == false)    // Loop until Timeout occurs
+            {
+                Application.DoEvents();                     // let other process goes on
+            }      
+            Disable_ReadLine_Queue();
 
-        }
-
-        private void ParseLine(string input_str, ref string item, ref string value)
-        {
-            string[] words;
-            words = input_str.Split(default(string[]), 2, StringSplitOptions.RemoveEmptyEntries);
+            char[] charSeparators = new char[] { '=', '\r' };
+            foreach (string str in UART_MSG)
+            {
+                string[] words;
+                words = str.Split(charSeparators, StringSplitOptions.RemoveEmptyEntries);
+                if (words.Length >= 2)
+                {
+                    AppendSerialMessageLog( words[0] + "/" + words[1] + '\x0d');
+                }
+            }
         }
 
     }
