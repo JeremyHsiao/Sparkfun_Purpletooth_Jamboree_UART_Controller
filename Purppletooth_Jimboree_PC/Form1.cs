@@ -175,6 +175,7 @@ namespace Purppletooth_Jimboree_PC
         static bool _readline_data_enqueue = false;
         private Queue<string> UART_MSG = new Queue<string>();
         static bool _readline_timeout_flag = false;
+        static bool _readline_receive_OK = false;
 
         public void ReadSerialPortThread()
         {
@@ -186,7 +187,16 @@ namespace Purppletooth_Jimboree_PC
                     {
                         string message = _serialPort.ReadLine();
                         //this.AppendSerialMessageLog(message);
-                        UART_MSG.Enqueue(message);
+//                        UART_MSG.Enqueue(message);
+                        if(message== "\x0dOK")
+                        {
+                            _readline_receive_OK = true;
+                            _readline_data_enqueue = false;
+                        }
+                        else
+                        {
+                            UART_MSG.Enqueue(message);
+                        }
                     }
                     catch (TimeoutException)
                     {
@@ -231,6 +241,16 @@ namespace Purppletooth_Jimboree_PC
         {
             _readline_data_enqueue = true;
             _serialPort.ReadTimeout = 1000;
+        }
+
+        private void Clear_ReadLine_Queue_Rcv_OK()
+        {
+            _readline_receive_OK = false;
+        }
+
+        private bool Check_ReadLine_Queue_Rcv_OK()
+        {
+            return (_readline_receive_OK == true ? true : false);
         }
 
         private void Disable_ReadLine_Queue()
@@ -519,14 +539,15 @@ namespace Purppletooth_Jimboree_PC
         {
             PTJ_Configuration board_config = new PTJ_Configuration();
             char[] GetConfigCharSeparators = new char[] { '=', '\r' };
-            foreach (string str in UART_MSG)
+            while (UART_MSG.Count>0)
             {
-                string[] words;
-                words = str.Split(GetConfigCharSeparators, StringSplitOptions.RemoveEmptyEntries);
+                string str = UART_MSG.Dequeue();
+                string[] words = str.Split(GetConfigCharSeparators, StringSplitOptions.RemoveEmptyEntries);
+
                 if (words.Length >= 2)
                 {
                     // Combine other splitting word,if any, into one parameter
-                    for(int index=2; index<words.Length; index++)
+                        for (int index=2; index<words.Length; index++)
                     {
                         words[1] += words[index];
                     }
@@ -542,19 +563,27 @@ namespace Purppletooth_Jimboree_PC
             //AppendSerialMessageLog("FIN.\r");
         }
 
-
+        private static bool _btnGetConfig_click_running=false;
         private void btnGetConfig_click(object sender, EventArgs e)
-        { 
-            Enable_ReadLine_Queue();
-            Clear_ReadLine_Timeout_Flag();
-            Serial_WriteStringWithPause("config\x0d");
-            while (Get_ReadLine_Timeout_Flag() == false)    // Loop until Timeout occurs
-            {
-                Application.DoEvents();                     // let other process goes on
-            }      
-            Disable_ReadLine_Queue();
+        {
 
-            ParseConfigQueue();
+            if (_btnGetConfig_click_running == false)
+            {
+                _btnGetConfig_click_running = true;
+                Enable_ReadLine_Queue();
+                Clear_ReadLine_Timeout_Flag();
+                Serial_WriteStringWithPause("config\x0d");
+                Clear_ReadLine_Queue_Rcv_OK();
+                while ((Check_ReadLine_Queue_Rcv_OK() == false) && (Get_ReadLine_Timeout_Flag() == false))    // Loop until either Timeout occurs or get an OK
+                {
+                    Application.DoEvents();                     // let other process goes on
+                }
+                Disable_ReadLine_Queue();
+                Application.DoEvents();                     // let other process goes on
+
+                ParseConfigQueue();
+                _btnGetConfig_click_running = false;
+            }
         }
 
     }
