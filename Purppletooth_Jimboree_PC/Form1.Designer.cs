@@ -110,7 +110,8 @@
             this.lstBaudRate.ItemHeight = 12;
             this.lstBaudRate.Items.AddRange(new object[] {
             "9600",
-            "115200"});
+            "115200",
+            "921600"});
             this.lstBaudRate.Location = new System.Drawing.Point(224, 12);
             this.lstBaudRate.Name = "lstBaudRate";
             this.lstBaudRate.Size = new System.Drawing.Size(43, 40);
