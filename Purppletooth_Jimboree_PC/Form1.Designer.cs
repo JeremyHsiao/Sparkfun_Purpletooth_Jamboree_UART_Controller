@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.btnFreshCOMNo = new System.Windows.Forms.Button();
@@ -36,6 +37,10 @@
             this.btnSendStringToUART = new System.Windows.Forms.Button();
             this.lstBaudRate = new System.Windows.Forms.ListBox();
             this.btnGetConfig = new System.Windows.Forms.Button();
+            this.dgvProfileView = new System.Windows.Forms.DataGridView();
+            this.Profile = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Connected = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvProfileView)).BeginInit();
             this.SuspendLayout();
             // 
             // listBox1
@@ -122,11 +127,55 @@
             this.btnGetConfig.UseVisualStyleBackColor = true;
             this.btnGetConfig.Click += new System.EventHandler(this.btnGetConfig_click);
             // 
+            // dgvProfileView
+            // 
+            this.dgvProfileView.AllowUserToAddRows = false;
+            this.dgvProfileView.AllowUserToDeleteRows = false;
+            this.dgvProfileView.AllowUserToResizeColumns = false;
+            this.dgvProfileView.AllowUserToResizeRows = false;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("新細明體", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvProfileView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            this.dgvProfileView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvProfileView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Profile,
+            this.Connected});
+            this.dgvProfileView.Location = new System.Drawing.Point(498, 64);
+            this.dgvProfileView.MultiSelect = false;
+            this.dgvProfileView.Name = "dgvProfileView";
+            this.dgvProfileView.ReadOnly = true;
+            this.dgvProfileView.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
+            this.dgvProfileView.RowTemplate.Height = 24;
+            this.dgvProfileView.ScrollBars = System.Windows.Forms.ScrollBars.None;
+            this.dgvProfileView.Size = new System.Drawing.Size(242, 166);
+            this.dgvProfileView.TabIndex = 9;
+            this.dgvProfileView.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
+            // 
+            // Profile
+            // 
+            this.Profile.Frozen = true;
+            this.Profile.HeaderText = "Profile";
+            this.Profile.Name = "Profile";
+            this.Profile.ReadOnly = true;
+            // 
+            // Connected
+            // 
+            this.Connected.Frozen = true;
+            this.Connected.HeaderText = "Connected";
+            this.Connected.Name = "Connected";
+            this.Connected.ReadOnly = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(494, 433);
+            this.ClientSize = new System.Drawing.Size(818, 584);
+            this.Controls.Add(this.dgvProfileView);
             this.Controls.Add(this.btnGetConfig);
             this.Controls.Add(this.lstBaudRate);
             this.Controls.Add(this.btnSendStringToUART);
@@ -139,6 +188,7 @@
             this.Text = "PurpleTooth Jamboree";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvProfileView)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -154,6 +204,9 @@
         private System.Windows.Forms.Button btnSendStringToUART;
         private System.Windows.Forms.ListBox lstBaudRate;
         private System.Windows.Forms.Button btnGetConfig;
+        private System.Windows.Forms.DataGridView dgvProfileView;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Profile;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Connected;
     }
 }
 

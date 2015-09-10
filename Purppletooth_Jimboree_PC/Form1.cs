@@ -28,6 +28,7 @@ namespace Purppletooth_Jimboree_PC
             Serial_UpdatePortName();
             Serial_UpdateBaudRate();
             DisableSendStringButton();
+            InitializeProfileView();
         }
 
         private void Serial_InitialSetting()
@@ -123,7 +124,14 @@ namespace Purppletooth_Jimboree_PC
                     for (index = 0; index < uart_str.Length; index++)
                     {
                         _serialPort.Write(uart_str, index, 1);
-                        Thread.Sleep(1);
+                        if(_serialPort.BaudRate==9600)
+                        {
+                            Thread.Sleep(5);
+                        }
+                        else
+                        {
+                            Thread.Sleep(2);
+                        }
                     }
                 }
                 catch (TimeoutException timeout)
@@ -426,6 +434,17 @@ namespace Purppletooth_Jimboree_PC
             Serial_UpdateBaudRate();
         }
 
+        private void button1_Click(object sender, EventArgs e)
+        {
+            Serial_WriteStringWithPause("set buad=115200\x0d");
+            _serialPort.BaudRate = 115200;
+            lstBaudRate.SelectedItem = "115200";
+            //lstBaudRate.SelectedIndex = 1;
+        }
+
+        //
+        // Melody Audio V5.0
+        //
         class PTJ_Configuration
         {
             public string audio { get; set; }
@@ -586,6 +605,28 @@ namespace Purppletooth_Jimboree_PC
             }
         }
 
+        private void InitializeProfileView()
+        {
+            // Populate the rows.
+            string[] row1 = new string[] { "SPP",   "OFF" };
+            string[] row2 = new string[] { "A2DP",  "OFF" };
+            string[] row3 = new string[] { "AVRCP", "OFF" };
+            string[] row4 = new string[] { "MAP",   "OFF" };
+            string[] row5 = new string[] { "HFP",   "OFF" };
+            string[] row6 = new string[] { "PBAP",  "OFF" };
+            object[] rows = new object[] { row1, row2, row3, row4, row5, row6 };
+
+            foreach (string[] rowArray in rows)
+            {
+                dgvProfileView.Rows.Add(rowArray);
+            }
+
+        }
+
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
     }
 
  
