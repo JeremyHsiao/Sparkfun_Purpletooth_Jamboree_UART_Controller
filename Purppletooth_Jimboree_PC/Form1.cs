@@ -443,44 +443,56 @@ namespace Purppletooth_Jimboree_PC
         }
 
         //
-        // Melody Audio V5.0
+        // Melody Audio V5.8 RC1
         //
         class PTJ_Configuration
         {
             public string audio { get; set; }
             public string autoconn { get; set; }
+            public string batt_curr { get; set; }
             public string batt_thresh { get; set; }
             public string baud { get; set; }
+            public string ble_auto_adv { get; set; }
             public string ble_role { get; set; }
             public string bps { get; set; }
             public string classic_role { get; set; }
             public string cmd_to { get; set; }
             public string cod { get; set; }
             public string codec { get; set; }
+            public string conn_to { get; set; }
             public string deep_sleep { get; set; }
             public string device_id { get; set; }
             public string discoverable { get; set; }
-            public string timeout { get; set; }
+//            public string timeout { get; set; }
             public string enable_a2dp { get; set; }
             public string enable_android_ble { get; set; }
             public string enable_avrcp { get; set; }
             public string enable_batt_ind { get; set; }
             public string enable_hfp { get; set; }
+            public string enable_hfp_comm { get; set; }
             public string enable_hfp_cvc { get; set; }
             public string enable_hfp_nrec { get; set; }
             public string enable_hfp_wbs { get; set; }
             public string enable_led { get; set; }
             public string enable_map { get; set; }
             public string enable_pbap { get; set; }
+            public string enable_raw_data { get; set; } 
+            public string enable_siri_status { get; set; }
             public string enable_spp { get; set; }
             public string enable_spp_sniff { get; set; }
             public string flow_ctrl { get; set; }
             public string force_analog_mic { get; set; }
             public string gpiocontrol { get; set; }
+            public string hid_role { get; set; }
             public string i2s { get; set; }
+            public string ibeacon_major { get; set; }
+            public string ibeacon_minor { get; set; }
+            public string ibeacon_power { get; set; }
+            public string ibeacon_uuid { get; set; }
             public string input_gain { get; set; }
             public string local_addr { get; set; }
             public string max_rec { get; set; }
+            public string mm { get; set; }
             public string music_meta_data { get; set; }
             public string name { get; set; }
             public string name_short { get; set; }
@@ -489,9 +501,14 @@ namespace Purppletooth_Jimboree_PC
             public string remote_addr { get; set; }
             public string rssi_thresh { get; set; }
             public string spp_transparent { get; set; }
+            public string ssp_caps { get; set; }
+            public string tws_mode { get; set; }
+            public string usb_host { get; set; }
             public string uuid_data { get; set; }
             public string uuid_spp { get; set; }
             public string uuid_srv { get; set; }
+            public string vreg_role { get; set; }
+            public string wired { get; set; }
 
             /*
                         public int audio { get; set; }
