@@ -770,6 +770,50 @@ namespace Purppletooth_Jimboree_PC
             }
 
         }
+
+        private bool ParseVersionQueueWithReady()
+        {
+            char[] GetConfigCharSeparators = new char[] { ' ', '\r' };
+            bool _ready_found = false;
+            while (UART_MSG.Count > 0)
+            {
+                string str = UART_MSG.Dequeue();
+                string[] words = str.Split(GetConfigCharSeparators, StringSplitOptions.RemoveEmptyEntries);
+                if (words[0] == "Ready")
+                {
+                    _ready_found = true;
+                    UART_MSG.Clear();
+                }
+            }
+            return _ready_found;
+        }
+
+        private static bool _btnCheckSystem_Click_running = false;
+        private void btnCheckSystem_Click(object sender, EventArgs e)
+        {
+            if (_btnCheckSystem_Click_running == false)
+            {
+                pctSystemCheckResult.Image = global::Properties.Resources.Checking; ;
+                _btnCheckSystem_Click_running = true;
+                Enable_ReadLine_Queue();
+                Clear_ReadLine_Timeout_Flag();
+                Serial_WriteStringWithPause("version\x0d");
+                while (Get_ReadLine_Timeout_Flag() == false)    // Loop until either Timeout occurs or get an OK
+                {
+                    Application.DoEvents();                     // let other process goes on
+                }
+                Disable_ReadLine_Queue();
+                if(ParseVersionQueueWithReady()== true)
+                {
+                    pctSystemCheckResult.Image = global::Properties.Resources.OK;
+                }
+                else
+                {
+                    pctSystemCheckResult.Image = global::Properties.Resources.NG;
+                }
+                _btnCheckSystem_Click_running = false;
+            }
+        }
     }
 
  

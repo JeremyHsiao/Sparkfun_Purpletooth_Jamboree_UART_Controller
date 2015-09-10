@@ -41,7 +41,10 @@
             this.Profile = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Connected = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.btnInquiry = new System.Windows.Forms.Button();
+            this.btnCheckSystem = new System.Windows.Forms.Button();
+            this.pctSystemCheckResult = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgvProfileView)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pctSystemCheckResult)).BeginInit();
             this.SuspendLayout();
             // 
             // listBox1
@@ -182,11 +185,31 @@
             this.btnInquiry.UseVisualStyleBackColor = true;
             this.btnInquiry.Click += new System.EventHandler(this.btnInquiry_Click);
             // 
+            // btnCheckSystem
+            // 
+            this.btnCheckSystem.Location = new System.Drawing.Point(381, 12);
+            this.btnCheckSystem.Name = "btnCheckSystem";
+            this.btnCheckSystem.Size = new System.Drawing.Size(48, 40);
+            this.btnCheckSystem.TabIndex = 11;
+            this.btnCheckSystem.Text = "Check System";
+            this.btnCheckSystem.UseVisualStyleBackColor = true;
+            this.btnCheckSystem.Click += new System.EventHandler(this.btnCheckSystem_Click);
+            // 
+            // pctSystemCheckResult
+            // 
+            this.pctSystemCheckResult.Location = new System.Drawing.Point(435, 16);
+            this.pctSystemCheckResult.Name = "pctSystemCheckResult";
+            this.pctSystemCheckResult.Size = new System.Drawing.Size(36, 36);
+            this.pctSystemCheckResult.TabIndex = 12;
+            this.pctSystemCheckResult.TabStop = false;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(818, 584);
+            this.Controls.Add(this.pctSystemCheckResult);
+            this.Controls.Add(this.btnCheckSystem);
             this.Controls.Add(this.btnInquiry);
             this.Controls.Add(this.dgvProfileView);
             this.Controls.Add(this.btnGetConfig);
@@ -202,6 +225,7 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgvProfileView)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pctSystemCheckResult)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -221,6 +245,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Profile;
         private System.Windows.Forms.DataGridViewTextBoxColumn Connected;
         private System.Windows.Forms.Button btnInquiry;
+        private System.Windows.Forms.Button btnCheckSystem;
+        private System.Windows.Forms.PictureBox pctSystemCheckResult;
     }
 }
 
