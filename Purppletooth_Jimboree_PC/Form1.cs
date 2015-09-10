@@ -178,28 +178,38 @@ namespace Purppletooth_Jimboree_PC
             }
         }
 
+        enum UART_READLINE_USAGE
+        {
+            FREERUN = 0,
+            ENQUEUE_TILL_ACK,
+            WAIT_SINGLE_LINE,
+            WAIT_ACK,
+        }
+
         static bool _continue_serial_read_write=false;
         static Thread readThread = null;
-        static bool _readline_data_enqueue = false;
         private Queue<string> UART_MSG = new Queue<string>();
+        static UART_READLINE_USAGE _readline_usage = UART_READLINE_USAGE.FREERUN;
+        //static bool _readline_data_enqueue = false;
         static bool _readline_timeout_flag = false;
         static bool _readline_receive_OK = false;
+        static bool _readline_read_oneline = false;
 
         public void ReadSerialPortThread()
         {
             while (_continue_serial_read_write)
             {
-                if (_readline_data_enqueue == true)
+                if (_readline_usage == UART_READLINE_USAGE.ENQUEUE_TILL_ACK)
                 {
                     try
                     {
                         string message = _serialPort.ReadLine();
                         //this.AppendSerialMessageLog(message);
-//                        UART_MSG.Enqueue(message);
-                        if(message== "\x0dOK")
+                        //                        UART_MSG.Enqueue(message);
+                        if (message == "\x0dOK")
                         {
                             _readline_receive_OK = true;
-                            _readline_data_enqueue = false;
+                            _readline_usage = UART_READLINE_USAGE.FREERUN;
                         }
                         else
                         {
@@ -212,7 +222,43 @@ namespace Purppletooth_Jimboree_PC
                         Disable_ReadLine_Queue();
                     }
                 }
-                else
+                else if (_readline_usage == UART_READLINE_USAGE.WAIT_SINGLE_LINE)
+                {
+                    try
+                    {
+                        string message = _serialPort.ReadLine();
+                        _readline_read_oneline = true;
+                        _readline_usage = UART_READLINE_USAGE.FREERUN;
+                        UART_MSG.Enqueue(message);
+                    }
+                    catch (TimeoutException)
+                    {
+                        Set_ReadLine_Timeout_Flag();
+                    }
+                }
+                else if (_readline_usage == UART_READLINE_USAGE.WAIT_ACK)
+                {
+                    try
+                    {
+                        string message = _serialPort.ReadLine();
+                        //this.AppendSerialMessageLog(message);
+                        //                        UART_MSG.Enqueue(message);
+                        if (message == "\x0dOK")
+                        {
+                            _readline_receive_OK = true;
+                            _readline_usage = UART_READLINE_USAGE.FREERUN;
+                        }
+                        else
+                        {
+                        }
+                        this.AppendSerialMessageLog(message);
+                    }
+                    catch (TimeoutException)
+                    {
+                        Set_ReadLine_Timeout_Flag();
+                    }
+                }
+                else if (_readline_usage == UART_READLINE_USAGE.FREERUN)
                 {
                     try
                     {
@@ -245,10 +291,10 @@ namespace Purppletooth_Jimboree_PC
             return (_readline_timeout_flag == true ? true : false);
         }
 
-        private void Enable_ReadLine_Queue()
+        private void Enable_ReadLine_Queue(int readline_timeout_time = 1000)
         {
-            _readline_data_enqueue = true;
-            _serialPort.ReadTimeout = 1000;
+            _readline_usage = UART_READLINE_USAGE.ENQUEUE_TILL_ACK;
+            _serialPort.ReadTimeout = readline_timeout_time;
         }
 
         private void Clear_ReadLine_Queue_Rcv_OK()
@@ -263,10 +309,23 @@ namespace Purppletooth_Jimboree_PC
 
         private void Disable_ReadLine_Queue()
         {
-            _readline_data_enqueue = false;
+            _readline_usage = UART_READLINE_USAGE.FREERUN;
             _serialPort.ReadTimeout = SerialPort.InfiniteTimeout;
         }
 
+        private void Start_Read_OneLine_Queue(int readline_timeout_time = 3000)
+        {
+            _readline_read_oneline = false;
+            _readline_usage = UART_READLINE_USAGE.WAIT_SINGLE_LINE;
+            _serialPort.ReadTimeout = readline_timeout_time;
+        }
+
+        private bool Check_Read_OneLine_OK()
+        {
+            return (_readline_read_oneline == true ? true : false);
+        }
+
+        /*
         public void ReadSerialPortThread_char()
         {
             while (_continue_serial_read_write)
@@ -283,6 +342,8 @@ namespace Purppletooth_Jimboree_PC
                 catch (TimeoutException) { }
             }
         }
+        */
+
         private void Start_SerialReadThread()
         {
             _continue_serial_read_write = true;
@@ -642,6 +703,71 @@ namespace Purppletooth_Jimboree_PC
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
+
+        }
+
+        public class InquiryResult
+        {
+            public string bt_addr;
+            public string device_class;
+            public string bt_rssi;
+            public InquiryResult(string addr, string dev_class, string rssi) { bt_addr = addr; device_class = dev_class; bt_rssi = rssi; }
+        }
+
+        private void ParseInquiryQueue()
+        {
+            PTJ_Configuration board_config = new PTJ_Configuration();
+            char[] GetConfigCharSeparators = new char[] { ' ', '\r' };
+            List<InquiryResult> BT_device = new List<InquiryResult>();
+
+            while (UART_MSG.Count > 0)
+            {
+                string str = UART_MSG.Dequeue();
+                string[] words = str.Split(GetConfigCharSeparators, StringSplitOptions.RemoveEmptyEntries);
+                if (words.Length >= 4)
+                {
+                    if(words[0]== "INQUIRY")
+                    {
+                        BT_device.Add(new InquiryResult(words[1], words[2], words[3]));
+                    }
+                }
+            }
+            IEnumerable<string> All_BT_Address = BT_device.Select(x => x.bt_addr).Distinct();
+            foreach(string addr in All_BT_Address)
+            {
+                Serial_WriteStringWithPause("name " + addr + "\x0d");
+                Clear_ReadLine_Timeout_Flag();
+                Start_Read_OneLine_Queue(); 
+                while ((Check_Read_OneLine_OK() == false) && (Get_ReadLine_Timeout_Flag() == false))    // Loop until either Timeout occurs or get one line
+                {
+                    Application.DoEvents();                     // let other process goes on
+                }
+                if (UART_MSG.Count > 0)
+                {
+                    AppendSerialMessageLog(UART_MSG.Dequeue() + '\x0d');
+                }
+            }
+        }
+
+        private static bool _btnInquiry_Click_running = false;
+        private void btnInquiry_Click(object sender, EventArgs e)
+        {
+            if (_btnInquiry_Click_running == false)
+            {
+                _btnInquiry_Click_running = true;
+                Enable_ReadLine_Queue(10000);
+                Clear_ReadLine_Timeout_Flag();
+                Serial_WriteStringWithPause("inquiry 30\x0d");
+                Clear_ReadLine_Queue_Rcv_OK();
+                while ((Check_ReadLine_Queue_Rcv_OK() == false) && (Get_ReadLine_Timeout_Flag() == false))    // Loop until either Timeout occurs or get an OK
+                {
+                    Application.DoEvents();                     // let other process goes on
+                }
+                Disable_ReadLine_Queue();
+                Application.DoEvents();                     // let other process goes on
+                ParseInquiryQueue();
+                _btnInquiry_Click_running = false;
+            }
 
         }
     }

@@ -40,6 +40,7 @@
             this.dgvProfileView = new System.Windows.Forms.DataGridView();
             this.Profile = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Connected = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.btnInquiry = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvProfileView)).BeginInit();
             this.SuspendLayout();
             // 
@@ -170,11 +171,22 @@
             this.Connected.Name = "Connected";
             this.Connected.ReadOnly = true;
             // 
+            // btnInquiry
+            // 
+            this.btnInquiry.Location = new System.Drawing.Point(327, 12);
+            this.btnInquiry.Name = "btnInquiry";
+            this.btnInquiry.Size = new System.Drawing.Size(48, 40);
+            this.btnInquiry.TabIndex = 10;
+            this.btnInquiry.Text = "Inquiry";
+            this.btnInquiry.UseVisualStyleBackColor = true;
+            this.btnInquiry.Click += new System.EventHandler(this.btnInquiry_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(818, 584);
+            this.Controls.Add(this.btnInquiry);
             this.Controls.Add(this.dgvProfileView);
             this.Controls.Add(this.btnGetConfig);
             this.Controls.Add(this.lstBaudRate);
@@ -207,6 +219,7 @@
         private System.Windows.Forms.DataGridView dgvProfileView;
         private System.Windows.Forms.DataGridViewTextBoxColumn Profile;
         private System.Windows.Forms.DataGridViewTextBoxColumn Connected;
+        private System.Windows.Forms.Button btnInquiry;
     }
 }
 
