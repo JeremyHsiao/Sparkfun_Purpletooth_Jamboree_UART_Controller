@@ -276,6 +276,11 @@ namespace Purppletooth_Jimboree_PC
             }
         }
 
+        private void Set_UART_ReadLine_Timeout_Time(int timeout_time)
+        {
+            _serialPort.ReadTimeout = timeout_time;
+        }
+
         private void Clear_ReadLine_Timeout_Flag()
         {
             _readline_timeout_flag = false;
@@ -819,7 +824,81 @@ namespace Purppletooth_Jimboree_PC
                 btnCheckSystem.Enabled = true;
             }
         }
-    }
 
- 
+        public class ListResult
+        {
+            public string bt_addr;
+            public List<string> bt_profile_list;
+            public ListResult(string addr, List<string> profile_list) { bt_addr = addr; bt_profile_list = profile_list; }
+        }
+        private void ParseListQueue()
+        {
+            char[] GetConfigCharSeparators = new char[] { ' ', '\r' };
+            List<ListResult> BT_device = new List<ListResult>();
+            List<string> bt_profile = new List<string>();
+
+            while (UART_MSG.Count > 0)
+            {
+                string str = UART_MSG.Dequeue();
+                string[] words = str.Split(GetConfigCharSeparators, StringSplitOptions.RemoveEmptyEntries);
+                if (words.Length >= 2)
+                {
+                    if (words[0] == "LIST")
+                    {
+                        // Combine other splitting word,if any, into one parameter
+                        for (int index = 2; index < words.Length; index++)
+                        {
+                            bt_profile.Add(words[index]);
+                        }
+
+                        BT_device.Add(new ListResult(words[1], bt_profile));
+                    }
+                }
+                Application.DoEvents();                     // let other process goes on
+            }
+            //Set_UART_ReadLine_Timeout_Time(10000);
+            IEnumerable<string> All_BT_Address = BT_device.Select(x => x.bt_addr).Distinct();
+            foreach (string addr in All_BT_Address)
+            {
+                Application.DoEvents();                     // let other process goes on
+                Thread.Sleep(5000);
+                Clear_ReadLine_Timeout_Flag();
+                Start_Read_OneLine_Queue(5000);
+                Serial_WriteStringWithPause("name " + addr + "\x0d");
+                while ((Check_Read_OneLine_OK() == false) && (Get_ReadLine_Timeout_Flag() == false))    // Loop until either Timeout occurs or get one line
+                {
+                    Application.DoEvents();                     // let other process goes on
+                }
+                if (UART_MSG.Count > 0)
+                {
+                    Application.DoEvents();                     // let other process goes on
+                    AppendSerialMessageLog(UART_MSG.Dequeue() + '\x0d');
+                }
+            }
+        }
+
+        private static bool _btnList_Click_running = false;
+        private void btnList_Click(object sender, EventArgs e)
+        { 
+            if (_btnList_Click_running == false)
+            {
+                btnList.Enabled = false;
+                _btnList_Click_running = true;
+                Enable_ReadLine_Queue(2000);
+                Clear_ReadLine_Timeout_Flag();
+                Serial_WriteStringWithPause("list\x0d");
+                Clear_ReadLine_Queue_Rcv_OK();
+                while ((Check_ReadLine_Queue_Rcv_OK() == false) && (Get_ReadLine_Timeout_Flag() == false))    // Loop until either Timeout occurs or get an OK
+                {
+                    Application.DoEvents();                     // let other process goes on
+                }
+                Disable_ReadLine_Queue();
+                Application.DoEvents();                     // let other process goes on
+                ParseListQueue();
+                _btnList_Click_running = false;
+                btnList.Enabled = true;
+            }
+        }
+
+    }
 }

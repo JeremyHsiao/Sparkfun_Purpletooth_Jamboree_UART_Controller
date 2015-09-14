@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.btnFreshCOMNo = new System.Windows.Forms.Button();
@@ -43,6 +43,7 @@
             this.btnInquiry = new System.Windows.Forms.Button();
             this.btnCheckSystem = new System.Windows.Forms.Button();
             this.pctSystemCheckResult = new System.Windows.Forms.PictureBox();
+            this.btnList = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvProfileView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pctSystemCheckResult)).BeginInit();
             this.SuspendLayout();
@@ -138,14 +139,14 @@
             this.dgvProfileView.AllowUserToDeleteRows = false;
             this.dgvProfileView.AllowUserToResizeColumns = false;
             this.dgvProfileView.AllowUserToResizeRows = false;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("新細明體", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvProfileView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("新細明體", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvProfileView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.dgvProfileView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvProfileView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Profile,
@@ -177,7 +178,7 @@
             // 
             // btnInquiry
             // 
-            this.btnInquiry.Location = new System.Drawing.Point(327, 12);
+            this.btnInquiry.Location = new System.Drawing.Point(758, 532);
             this.btnInquiry.Name = "btnInquiry";
             this.btnInquiry.Size = new System.Drawing.Size(48, 40);
             this.btnInquiry.TabIndex = 10;
@@ -203,11 +204,22 @@
             this.pctSystemCheckResult.TabIndex = 12;
             this.pctSystemCheckResult.TabStop = false;
             // 
+            // btnList
+            // 
+            this.btnList.Location = new System.Drawing.Point(327, 12);
+            this.btnList.Name = "btnList";
+            this.btnList.Size = new System.Drawing.Size(48, 40);
+            this.btnList.TabIndex = 13;
+            this.btnList.Text = "List";
+            this.btnList.UseVisualStyleBackColor = true;
+            this.btnList.Click += new System.EventHandler(this.btnList_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(818, 584);
+            this.Controls.Add(this.btnList);
             this.Controls.Add(this.pctSystemCheckResult);
             this.Controls.Add(this.btnCheckSystem);
             this.Controls.Add(this.btnInquiry);
@@ -247,6 +259,7 @@
         private System.Windows.Forms.Button btnInquiry;
         private System.Windows.Forms.Button btnCheckSystem;
         private System.Windows.Forms.PictureBox pctSystemCheckResult;
+        private System.Windows.Forms.Button btnList;
     }
 }
 
