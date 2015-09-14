@@ -666,6 +666,7 @@ namespace Purppletooth_Jimboree_PC
 
             if (_btnGetConfig_click_running == false)
             {
+                btnGetConfig.Enabled = false;
                 _btnGetConfig_click_running = true;
                 Enable_ReadLine_Queue();
                 Clear_ReadLine_Timeout_Flag();
@@ -680,6 +681,7 @@ namespace Purppletooth_Jimboree_PC
 
                 ParseConfigQueue();
                 _btnGetConfig_click_running = false;
+                btnGetConfig.Enabled = true;
             }
         }
 
@@ -754,6 +756,7 @@ namespace Purppletooth_Jimboree_PC
         {
             if (_btnInquiry_Click_running == false)
             {
+                btnInquiry.Enabled = false;
                 _btnInquiry_Click_running = true;
                 Enable_ReadLine_Queue(10000);
                 Clear_ReadLine_Timeout_Flag();
@@ -767,8 +770,8 @@ namespace Purppletooth_Jimboree_PC
                 Application.DoEvents();                     // let other process goes on
                 ParseInquiryQueue();
                 _btnInquiry_Click_running = false;
+                btnInquiry.Enabled = true;
             }
-
         }
 
         private bool ParseVersionQueueWithReady()
@@ -793,8 +796,9 @@ namespace Purppletooth_Jimboree_PC
         {
             if (_btnCheckSystem_Click_running == false)
             {
-                pctSystemCheckResult.Image = global::Properties.Resources.Checking; ;
+                btnCheckSystem.Enabled = false;
                 _btnCheckSystem_Click_running = true;
+                pctSystemCheckResult.Image = global::Properties.Resources.Checking;
                 Enable_ReadLine_Queue();
                 Clear_ReadLine_Timeout_Flag();
                 Serial_WriteStringWithPause("version\x0d");
@@ -812,6 +816,7 @@ namespace Purppletooth_Jimboree_PC
                     pctSystemCheckResult.Image = global::Properties.Resources.NG;
                 }
                 _btnCheckSystem_Click_running = false;
+                btnCheckSystem.Enabled = true;
             }
         }
     }
