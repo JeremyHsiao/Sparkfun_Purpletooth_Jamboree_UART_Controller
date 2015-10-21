@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.btnFreshCOMNo = new System.Windows.Forms.Button();
@@ -44,6 +44,7 @@
             this.btnCheckSystem = new System.Windows.Forms.Button();
             this.pctSystemCheckResult = new System.Windows.Forms.PictureBox();
             this.btnList = new System.Windows.Forms.Button();
+            this.btnTestBLEKeyBoardHID = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvProfileView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pctSystemCheckResult)).BeginInit();
             this.SuspendLayout();
@@ -139,14 +140,14 @@
             this.dgvProfileView.AllowUserToDeleteRows = false;
             this.dgvProfileView.AllowUserToResizeColumns = false;
             this.dgvProfileView.AllowUserToResizeRows = false;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("新細明體", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvProfileView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("新細明體", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvProfileView.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dgvProfileView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvProfileView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Profile,
@@ -214,11 +215,22 @@
             this.btnList.UseVisualStyleBackColor = true;
             this.btnList.Click += new System.EventHandler(this.btnList_Click);
             // 
+            // btnTestBLEKeyBoardHID
+            // 
+            this.btnTestBLEKeyBoardHID.Location = new System.Drawing.Point(523, 532);
+            this.btnTestBLEKeyBoardHID.Name = "btnTestBLEKeyBoardHID";
+            this.btnTestBLEKeyBoardHID.Size = new System.Drawing.Size(59, 40);
+            this.btnTestBLEKeyBoardHID.TabIndex = 14;
+            this.btnTestBLEKeyBoardHID.Text = "HID Keyboard";
+            this.btnTestBLEKeyBoardHID.UseVisualStyleBackColor = true;
+            this.btnTestBLEKeyBoardHID.Click += new System.EventHandler(this.btnTestBLEKeyBoardHID_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(818, 584);
+            this.Controls.Add(this.btnTestBLEKeyBoardHID);
             this.Controls.Add(this.btnList);
             this.Controls.Add(this.pctSystemCheckResult);
             this.Controls.Add(this.btnCheckSystem);
@@ -260,6 +272,7 @@
         private System.Windows.Forms.Button btnCheckSystem;
         private System.Windows.Forms.PictureBox pctSystemCheckResult;
         private System.Windows.Forms.Button btnList;
+        private System.Windows.Forms.Button btnTestBLEKeyBoardHID;
     }
 }
 

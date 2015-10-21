@@ -145,6 +145,37 @@ namespace Purppletooth_Jimboree_PC
             }
         }
 
+        private void Serial_WriteBytesWithPause(byte[] data_buffer)
+        {
+            if (_serialPort.IsOpen == true)
+            {
+                try
+                {
+                    int index;
+                    for (index = 0; index < data_buffer.Length; index++)
+                    {
+                        _serialPort.Write(data_buffer, index, 1);
+                        if (_serialPort.BaudRate == 9600)
+                        {
+                            Thread.Sleep(5);
+                        }
+                        else
+                        {
+                            //Thread.Sleep(2);
+                        }
+                    }
+                }
+                catch (TimeoutException timeout)
+                {
+                    MessageBox.Show(timeout.ToString());
+                }
+            }
+            else
+            {
+                AppendSerialMessageLog("COM is closed and cannot send byte data\n");
+            }
+        }
+
         private void Serial_WriteBufferWithIndexLength(byte[] data_buffer, int offset, int count)
         {
             if (_serialPort.IsOpen == true)
@@ -227,9 +258,9 @@ namespace Purppletooth_Jimboree_PC
                     try
                     {
                         string message = _serialPort.ReadLine();
+                        UART_MSG.Enqueue(message);
                         _readline_read_oneline = true;
                         _readline_usage = UART_READLINE_USAGE.FREERUN;
-                        UART_MSG.Enqueue(message);
                     }
                     catch (TimeoutException)
                     {
@@ -325,7 +356,7 @@ namespace Purppletooth_Jimboree_PC
             _serialPort.ReadTimeout = readline_timeout_time;
         }
 
-        private bool Check_Read_OneLine_OK()
+        private bool Check_Read_OneLine_Done()
         {
             return (_readline_read_oneline == true ? true : false);
         }
@@ -745,7 +776,7 @@ namespace Purppletooth_Jimboree_PC
                 Serial_WriteStringWithPause("name " + addr + "\x0d");
                 Clear_ReadLine_Timeout_Flag();
                 Start_Read_OneLine_Queue(); 
-                while ((Check_Read_OneLine_OK() == false) && (Get_ReadLine_Timeout_Flag() == false))    // Loop until either Timeout occurs or get one line
+                while ((Check_Read_OneLine_Done() == false) && (Get_ReadLine_Timeout_Flag() == false))    // Loop until either Timeout occurs or get one line
                 {
                     Application.DoEvents();                     // let other process goes on
                 }
@@ -865,7 +896,7 @@ namespace Purppletooth_Jimboree_PC
                 Clear_ReadLine_Timeout_Flag();
                 Start_Read_OneLine_Queue(5000);
                 Serial_WriteStringWithPause("name " + addr + "\x0d");
-                while ((Check_Read_OneLine_OK() == false) && (Get_ReadLine_Timeout_Flag() == false))    // Loop until either Timeout occurs or get one line
+                while ((Check_Read_OneLine_Done() == false) && (Get_ReadLine_Timeout_Flag() == false))    // Loop until either Timeout occurs or get one line
                 {
                     Application.DoEvents();                     // let other process goes on
                 }
@@ -900,5 +931,118 @@ namespace Purppletooth_Jimboree_PC
             }
         }
 
+        private static bool _btnTestBLEKeyBoardHID_Click_running = false;
+        private void btnTestBLEKeyBoardHID_Click(object sender, EventArgs e)
+        {
+            char[] GetConfigCharSeparators = new char[] { ' ', '\r' };
+
+            if (_btnTestBLEKeyBoardHID_Click_running == false)
+            {
+                btnTestBLEKeyBoardHID.Enabled = false;
+                _btnList_Click_running = true;
+
+                UART_MSG.Clear();
+                Clear_ReadLine_Timeout_Flag();
+                Start_Read_OneLine_Queue(2000);
+                Serial_WriteStringWithPause("send 16 8\x0d");
+                while ((Check_Read_OneLine_Done() == false) && (Get_ReadLine_Timeout_Flag() == false))    // Loop until either Timeout occurs or get an OK
+                {
+                    Application.DoEvents();                     // let other process goes on
+                }
+                if ((Check_Read_OneLine_Done() == true))         // one line is read
+                {
+                    string str1 = UART_MSG.Dequeue();
+                    string[] words1 = str1.Split(GetConfigCharSeparators, StringSplitOptions.RemoveEmptyEntries);
+                    if (words1[0] == "OK")
+                    {
+                        AppendSerialMessageLog("1");
+                    }
+                    Application.DoEvents();                     // let other process goes on
+                }
+                else
+                {
+                    goto exit_btnTestBLEKeyBoardHID_Click;
+                }
+
+                // 2nd
+                UART_MSG.Clear();
+                Clear_ReadLine_Timeout_Flag();
+                Start_Read_OneLine_Queue(3000);  
+                //Serial_WriteStringWithPause("0000040000000000\x0d");
+                byte[] key_pressed_0 = { 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0x00, 0x00};
+                Serial_WriteBytesWithPause(key_pressed_0);
+                while ((Check_Read_OneLine_Done() == false) && (Get_ReadLine_Timeout_Flag() == false))    // Loop until either Timeout occurs or get an OK
+                {
+                    Application.DoEvents();                     // let other process goes on
+                }
+                if ((Check_Read_OneLine_Done() == true))        // one line is read
+                {
+                    string str2 = UART_MSG.Dequeue();
+                    string[] words2 = str2.Split(GetConfigCharSeparators, StringSplitOptions.RemoveEmptyEntries);
+                    if (words2[0] == "OK")
+                    {
+                        AppendSerialMessageLog("2");
+                    }
+                    Application.DoEvents();                     // let other process goes on
+                }
+                else
+                {
+                    goto exit_btnTestBLEKeyBoardHID_Click;
+                }
+
+                // 3rd
+                UART_MSG.Clear();
+                Clear_ReadLine_Timeout_Flag();
+                Start_Read_OneLine_Queue(5000);
+                Serial_WriteStringWithPause("send 16 8\x0d");
+                while ((Check_Read_OneLine_Done() == false) && (Get_ReadLine_Timeout_Flag() == false))    // Loop until either Timeout occurs or get an OK
+                {
+                    Application.DoEvents();                     // let other process goes on
+                }
+                if ((Check_Read_OneLine_Done() == true))         // one line is read
+                {
+                    string str3 = UART_MSG.Dequeue();
+                    string[] words3 = str3.Split(GetConfigCharSeparators, StringSplitOptions.RemoveEmptyEntries);
+                    if (words3[0] == "OK")
+                    {
+                        AppendSerialMessageLog("3");
+                    }
+                    Application.DoEvents();                     // let other process goes on
+                }
+                else
+                {
+                    goto exit_btnTestBLEKeyBoardHID_Click;
+                }
+
+                // 4th
+                UART_MSG.Clear();
+                Clear_ReadLine_Timeout_Flag();
+                Start_Read_OneLine_Queue(5000);
+                //Serial_WriteStringWithPause("0000000000000000\x0d");
+                byte[] key_released_all = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
+                Serial_WriteBytesWithPause(key_released_all);
+                while ((Check_Read_OneLine_Done() == false) && (Get_ReadLine_Timeout_Flag() == false))    // Loop until either Timeout occurs or get an OK
+                {
+                    Application.DoEvents();                     // let other process goes on
+                }
+                if ((Check_Read_OneLine_Done() == true))        // one line is read
+                {
+                    string str4 = UART_MSG.Dequeue();
+                    string[] words4 = str4.Split(GetConfigCharSeparators, StringSplitOptions.RemoveEmptyEntries);
+                    if (words4[0] == "OK")
+                    {
+                        AppendSerialMessageLog("4");
+                    }
+                    UART_MSG.Clear();
+                    Application.DoEvents();                     // let other process goes on
+                }
+
+                exit_btnTestBLEKeyBoardHID_Click:
+
+                UART_MSG.Clear();
+                _btnTestBLEKeyBoardHID_Click_running = false;
+                btnTestBLEKeyBoardHID.Enabled = true;
+            }
+        }
     }
 }
