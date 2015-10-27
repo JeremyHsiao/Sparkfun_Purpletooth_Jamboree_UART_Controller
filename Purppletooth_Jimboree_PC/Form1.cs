@@ -1044,5 +1044,273 @@ namespace Purppletooth_Jimboree_PC
                 btnTestBLEKeyBoardHID.Enabled = true;
             }
         }
+
+        enum HID_KEYBOARD_CODE
+        {
+            KEY_A = 4,
+            KEY_B = 5,
+            KEY_C = 6,
+            KEY_D = 7,
+            KEY_E = 8,
+            KEY_F = 9,
+            KEY_G = 10,
+            KEY_H = 11,
+            KEY_I = 12,
+            KEY_J = 13,
+            KEY_K = 14,
+            KEY_L = 15,
+            KEY_M = 16,
+            KEY_N = 17,
+            KEY_O = 18,
+            KEY_P = 19,
+            KEY_Q = 20,
+            KEY_R = 21,
+            KEY_S = 22,
+            KEY_T = 23,
+            KEY_U = 24,
+            KEY_V = 25,
+            KEY_W = 26,
+            KEY_X = 27,
+            KEY_Y = 28,
+            KEY_Z = 29,
+            KEY_1 = 30,             // !
+            KEY_2 = 31,             // @
+            KEY_3 = 32,             // #
+            KEY_4 = 33,             // $
+            KEY_5 = 34,             // %
+            KEY_6 = 35,             // ^
+            KEY_7 = 36,             // &
+            KEY_8 = 37,             // *
+            KEY_9 = 38,             // (
+            KEY_0 = 39,             // )
+            KEY_Enter = 40,
+            KEY_Escape = 41,
+            KEY_Delete_Back = 42,
+            KEY_Tab = 43,
+            KEY_Space = 44,
+            KEY_Minus = 45,         // -/_
+            KEY_Equals = 46,        // =/+
+            KEY_LeftBracket = 47,   // [/{
+            KEY_RightBracket = 48,  // ]/}
+            KEY_Backslash = 49,     // BACK_SLASH/|
+            KEY_Semicolon = 51,     // ;\:
+            KEY_Quote = 52,         // '\"
+            KEY_Grave = 53,         // `\~
+            KEY_Comma = 54,         // ,/<
+            KEY_Period = 55,        // ./>
+            KEY_Slash = 56,         // //?
+            KEY_CapsLock = 57,
+            KEY_F1 = 58,
+            KEY_F2 = 59,
+            KEY_F3 = 60,
+            KEY_F4 = 61,
+            KEY_F5 = 62,
+            KEY_F6 = 63,
+            KEY_F7 = 64,
+            KEY_F8 = 65,
+            KEY_F9 = 66,
+            KEY_F10 = 67,
+            KEY_F11 = 68,
+            KEY_F12 = 69,
+            KEY_PrintScreen = 70,
+            KEY_ScrollLock = 71,
+            KEY_Pause = 72,
+            KEY_Insert = 73,
+            KEY_Home = 74,
+            KEY_PageUp = 75,
+            KEY_DeleteForward = 76,
+            KEY_End = 77,
+            KEY_PageDown = 78,
+            KEY_Right = 79,
+            KEY_Left = 80,
+            KEY_Down = 81,
+            KEY_Up = 82,
+            KP_NumLock = 83,
+            KP_Divide = 84,
+            KP_Multiply = 85,
+            KP_Subtract = 86,
+            KP_Add = 87,
+            KP_Enter = 88,
+            KP_1 = 89,
+            KP_2 = 90,
+            KP_3 = 91,
+            KP_4 = 92,
+            KP_5 = 93,
+            KP_6 = 94,
+            KP_7 = 95,
+            KP_8 = 96,
+            KP_9 = 97,
+            KP_0 = 98,
+            KP_Point = 99,
+            KEY_NonUSBackslash = 100,
+            KP_Equals = 103,
+            KEY_F13 = 104,
+            KEY_F14 = 105,
+            KEY_F15 = 106,
+            KEY_F16 = 107,
+            KEY_F17 = 108,
+            KEY_F18 = 109,
+            KEY_F19 = 110,
+            KEY_F20 = 111,
+            KEY_F21 = 112,
+            KEY_F22 = 113,
+            KEY_F23 = 114,
+            KEY_F24 = 115,
+            KEY_Help = 117,
+            KEY_Menu = 118,
+            KEY_Mute = 127,
+            KEY_Vol_Up = 128,
+            KEY_Vol_Down = 129,
+            KEY_LeftControl = 224,
+            KEY_LeftShift = 225,
+            KEY_LeftAlt = 226,
+            KEY_LeftGUI = 227,
+            KEY_RightControl = 228,
+            KEY_RightShift = 229,
+            KEY_RightAlt = 230,
+            KEY_RightGUI = 231
+        };
+
+        //#define MK_BIT_L_ALT					2
+        //#define MK_BIT_L_GUI					3
+        //#define MK_BIT_R_CTRL					4
+        //#define MK_BIT_R_SHIFT					5
+        //#define MK_BIT_R_ALT					6
+        //#define MK_BIT_R_GUI					7
+
+        private const byte L_CTRL_MODIFIER = (1 << 0);        //#define MK_BIT_L_CTRL					0
+        private const byte L_SHIFT_MODIFIER = (1 << 1);       //#define MK_BIT_L_SHIFT					1
+
+        private byte[,] hid_key_LUT = new byte[128,2] {
+            {0, 0},                                                                       // 0x00
+            {(byte)HID_KEYBOARD_CODE.KEY_A,              L_CTRL_MODIFIER},                // 0x01
+            {(byte)HID_KEYBOARD_CODE.KEY_B,              L_CTRL_MODIFIER},                // 0x02
+            {(byte)HID_KEYBOARD_CODE.KEY_C,              L_CTRL_MODIFIER},                // 0x03     ctrl-c
+            {(byte)HID_KEYBOARD_CODE.KEY_D,              L_CTRL_MODIFIER},                // 0x04
+            {(byte)HID_KEYBOARD_CODE.KEY_E,              L_CTRL_MODIFIER},                // 0x05
+            {(byte)HID_KEYBOARD_CODE.KEY_F,              L_CTRL_MODIFIER},                // 0x06
+            {(byte)HID_KEYBOARD_CODE.KEY_G,              L_CTRL_MODIFIER},                // 0x07     ctrl-g
+            {(byte)HID_KEYBOARD_CODE.KEY_Delete_Back,    0},                              // 0x08     backspace / ctrl-h
+            {(byte)HID_KEYBOARD_CODE.KEY_Tab,            0},                              // 0x09     tab / ctrl-i
+            {(byte)HID_KEYBOARD_CODE.KEY_J,              L_CTRL_MODIFIER},                // 0x0A     linefeed / ctrl-j / LF
+            {(byte)HID_KEYBOARD_CODE.KEY_K,              L_CTRL_MODIFIER},                // 0x0B
+            {(byte)HID_KEYBOARD_CODE.KEY_L,              L_CTRL_MODIFIER},                // 0x0C
+            {(byte)HID_KEYBOARD_CODE.KEY_M,              L_CTRL_MODIFIER},                // 0x0D     carriage return / ctrl-m / CR
+            {(byte)HID_KEYBOARD_CODE.KEY_N,              L_CTRL_MODIFIER},                // 0x0E
+            {(byte)HID_KEYBOARD_CODE.KEY_O,              L_CTRL_MODIFIER},                // 0x0F
+            {(byte)HID_KEYBOARD_CODE.KEY_P,              L_CTRL_MODIFIER},                // 0x10
+            {(byte)HID_KEYBOARD_CODE.KEY_Q,              L_CTRL_MODIFIER},                // 0x11
+            {(byte)HID_KEYBOARD_CODE.KEY_R,              L_CTRL_MODIFIER},                // 0x12
+            {(byte)HID_KEYBOARD_CODE.KEY_S,              L_CTRL_MODIFIER},                // 0x13
+            {(byte)HID_KEYBOARD_CODE.KEY_T,              L_CTRL_MODIFIER},                // 0x14
+            {(byte)HID_KEYBOARD_CODE.KEY_U,              L_CTRL_MODIFIER},                // 0x15
+            {(byte)HID_KEYBOARD_CODE.KEY_V,              L_CTRL_MODIFIER},                // 0x16
+            {(byte)HID_KEYBOARD_CODE.KEY_W,              L_CTRL_MODIFIER},                // 0x17
+            {(byte)HID_KEYBOARD_CODE.KEY_X,              L_CTRL_MODIFIER},                // 0x18
+            {(byte)HID_KEYBOARD_CODE.KEY_Y,              L_CTRL_MODIFIER},                // 0x19
+            {(byte)HID_KEYBOARD_CODE.KEY_Z,              L_SHIFT_MODIFIER},               // 0x1A     ctrl-z
+            {(byte)HID_KEYBOARD_CODE.KEY_Escape,         0},                              // 0x1B     esc
+            {0, 0},                                                                       // 0x1C
+            {0, 0},                                                                       // 0x1D
+            {0, 0},                                                                       // 0x1E
+            {0, 0},                                                                       // 0x1F
+            {(byte)HID_KEYBOARD_CODE.KEY_Space,          0},                              // 0x20
+            {(byte)HID_KEYBOARD_CODE.KEY_1,              L_SHIFT_MODIFIER},               // 0x21	  !
+            {(byte)HID_KEYBOARD_CODE.KEY_Quote,          L_SHIFT_MODIFIER},               // 0x22     "
+            {(byte)HID_KEYBOARD_CODE.KEY_3,              L_SHIFT_MODIFIER},               // 0x23     #
+            {(byte)HID_KEYBOARD_CODE.KEY_4,              L_SHIFT_MODIFIER},               // 0x24     $
+            {(byte)HID_KEYBOARD_CODE.KEY_5,              L_SHIFT_MODIFIER},               // 0x25     %
+            {(byte)HID_KEYBOARD_CODE.KEY_7,              L_SHIFT_MODIFIER},               // 0x26     &
+            {(byte)HID_KEYBOARD_CODE.KEY_Quote,          0},                              // 0x27     '
+            {(byte)HID_KEYBOARD_CODE.KEY_9,              L_SHIFT_MODIFIER},               // 0x28     (
+            {(byte)HID_KEYBOARD_CODE.KEY_0,              L_SHIFT_MODIFIER},               // 0x29     )
+            {(byte)HID_KEYBOARD_CODE.KEY_8,              L_SHIFT_MODIFIER},               // 0x2A     *
+            {(byte)HID_KEYBOARD_CODE.KEY_Equals,         L_SHIFT_MODIFIER},               // 0x2B     +
+            {(byte)HID_KEYBOARD_CODE.KEY_Comma,          0},                              // 0x2C     ,
+            {(byte)HID_KEYBOARD_CODE.KEY_Minus,          0},                              // 0x2D     -
+            {(byte)HID_KEYBOARD_CODE.KEY_Period,         0},                              // 0x2E     .
+            {(byte)HID_KEYBOARD_CODE.KEY_Slash,          0},                              // 0x2F     /
+            {(byte)HID_KEYBOARD_CODE.KEY_0,              0},                              // 0x30     0
+            {(byte)HID_KEYBOARD_CODE.KEY_1,              0},                              // 0x31     1
+            {(byte)HID_KEYBOARD_CODE.KEY_2,              0},                              // 0x32     2
+            {(byte)HID_KEYBOARD_CODE.KEY_3,              0},                              // 0x33     3
+            {(byte)HID_KEYBOARD_CODE.KEY_4,              0},                              // 0x34     4
+            {(byte)HID_KEYBOARD_CODE.KEY_5,              0},                              // 0x35     5
+            {(byte)HID_KEYBOARD_CODE.KEY_6,              0},                              // 0x36     6
+            {(byte)HID_KEYBOARD_CODE.KEY_7,              0},                              // 0x37     7
+            {(byte)HID_KEYBOARD_CODE.KEY_8,              0},                              // 0x38     8
+            {(byte)HID_KEYBOARD_CODE.KEY_9,              0},                              // 0x39     9
+            {(byte)HID_KEYBOARD_CODE.KEY_Semicolon,      L_SHIFT_MODIFIER},               // 0x3A     :
+            {(byte)HID_KEYBOARD_CODE.KEY_Semicolon,      0},                              // 0x3B     ;
+            {(byte)HID_KEYBOARD_CODE.KEY_Comma,          L_SHIFT_MODIFIER},               // 0x3C     <
+            {(byte)HID_KEYBOARD_CODE.KEY_Equals,         0},                              // 0x3D     =
+            {(byte)HID_KEYBOARD_CODE.KEY_Period,         L_SHIFT_MODIFIER},               // 0x3E     >
+            {(byte)HID_KEYBOARD_CODE.KEY_Slash,          L_SHIFT_MODIFIER},               // 0x3F     ?
+            {(byte)HID_KEYBOARD_CODE.KEY_2,              L_SHIFT_MODIFIER},               // 0x40     @
+            {(byte)HID_KEYBOARD_CODE.KEY_A,              L_SHIFT_MODIFIER},               // 0x41     A
+            {(byte)HID_KEYBOARD_CODE.KEY_B,              L_SHIFT_MODIFIER},               // 0x42     B
+            {(byte)HID_KEYBOARD_CODE.KEY_C,              L_SHIFT_MODIFIER},               // 0x43     C
+            {(byte)HID_KEYBOARD_CODE.KEY_D,              L_SHIFT_MODIFIER},               // 0x44     D
+            {(byte)HID_KEYBOARD_CODE.KEY_E,              L_SHIFT_MODIFIER},               // 0x45     E
+            {(byte)HID_KEYBOARD_CODE.KEY_F,              L_SHIFT_MODIFIER},               // 0x46     F
+            {(byte)HID_KEYBOARD_CODE.KEY_G,              L_SHIFT_MODIFIER},               // 0x47     G
+            {(byte)HID_KEYBOARD_CODE.KEY_H,              L_SHIFT_MODIFIER},               // 0x48     H
+            {(byte)HID_KEYBOARD_CODE.KEY_I,              L_SHIFT_MODIFIER},               // 0x49     I
+            {(byte)HID_KEYBOARD_CODE.KEY_J,              L_SHIFT_MODIFIER},               // 0x4A     J
+            {(byte)HID_KEYBOARD_CODE.KEY_K,              L_SHIFT_MODIFIER},               // 0x4B     K
+            {(byte)HID_KEYBOARD_CODE.KEY_L,              L_SHIFT_MODIFIER},               // 0x4C     L
+            {(byte)HID_KEYBOARD_CODE.KEY_M,              L_SHIFT_MODIFIER},               // 0x4D     M
+            {(byte)HID_KEYBOARD_CODE.KEY_N,              L_SHIFT_MODIFIER},               // 0x4E     N 
+            {(byte)HID_KEYBOARD_CODE.KEY_O,              L_SHIFT_MODIFIER},               // 0x4F     O
+            {(byte)HID_KEYBOARD_CODE.KEY_P,              L_SHIFT_MODIFIER},               // 0x50     P
+            {(byte)HID_KEYBOARD_CODE.KEY_Q,              L_SHIFT_MODIFIER},               // 0x51     Q
+            {(byte)HID_KEYBOARD_CODE.KEY_R,              L_SHIFT_MODIFIER},               // 0x52     R
+            {(byte)HID_KEYBOARD_CODE.KEY_S,              L_SHIFT_MODIFIER},               // 0x53     S
+            {(byte)HID_KEYBOARD_CODE.KEY_T,              L_SHIFT_MODIFIER},               // 0x54     T
+            {(byte)HID_KEYBOARD_CODE.KEY_U,              L_SHIFT_MODIFIER},               // 0x55     U
+            {(byte)HID_KEYBOARD_CODE.KEY_V,              L_SHIFT_MODIFIER},               // 0x56     V
+            {(byte)HID_KEYBOARD_CODE.KEY_W,              L_SHIFT_MODIFIER},               // 0x57     W
+            {(byte)HID_KEYBOARD_CODE.KEY_X,              L_SHIFT_MODIFIER},               // 0x58     X
+            {(byte)HID_KEYBOARD_CODE.KEY_Y,              L_SHIFT_MODIFIER},               // 0x59     Y
+            {(byte)HID_KEYBOARD_CODE.KEY_Z,              L_SHIFT_MODIFIER},               // 0x5A     Z
+            {(byte)HID_KEYBOARD_CODE.KEY_LeftBracket,    0},                              // 0x5B     [
+            {(byte)HID_KEYBOARD_CODE.KEY_Backslash,      0},                              // 0x5C     BACK-SLASH
+            {(byte)HID_KEYBOARD_CODE.KEY_RightBracket,   0},                              // 0x5D     ]
+            {(byte)HID_KEYBOARD_CODE.KEY_6,              L_SHIFT_MODIFIER},               // 0x5E     ^
+            {(byte)HID_KEYBOARD_CODE.KEY_Minus,          L_SHIFT_MODIFIER},               // 0x5F     _
+            {(byte)HID_KEYBOARD_CODE.KEY_Grave,          0},                              // 0x60     `
+            {(byte)HID_KEYBOARD_CODE.KEY_A,              0},                              // 0x61     a
+            {(byte)HID_KEYBOARD_CODE.KEY_B,              0},                              // 0x62     b
+            {(byte)HID_KEYBOARD_CODE.KEY_C,              0},                              // 0x63     c
+            {(byte)HID_KEYBOARD_CODE.KEY_D,              0},                              // 0x64     d
+            {(byte)HID_KEYBOARD_CODE.KEY_E,              0},                              // 0x65     e
+            {(byte)HID_KEYBOARD_CODE.KEY_F,              0},                              // 0x66     f
+            {(byte)HID_KEYBOARD_CODE.KEY_G,              0},                              // 0x67     g
+            {(byte)HID_KEYBOARD_CODE.KEY_H,              0},                              // 0x68     h
+            {(byte)HID_KEYBOARD_CODE.KEY_I,              0},                              // 0x69     i
+            {(byte)HID_KEYBOARD_CODE.KEY_J,              0},                              // 0x6A     j
+            {(byte)HID_KEYBOARD_CODE.KEY_K,              0},                              // 0x6B     k
+            {(byte)HID_KEYBOARD_CODE.KEY_L,              0},                              // 0x6C     l
+            {(byte)HID_KEYBOARD_CODE.KEY_M,              0},                              // 0x6D     m
+            {(byte)HID_KEYBOARD_CODE.KEY_N,              0},                              // 0x6E     n 
+            {(byte)HID_KEYBOARD_CODE.KEY_O,              0},                              // 0x6F     o
+            {(byte)HID_KEYBOARD_CODE.KEY_P,              0},                              // 0x70     p
+            {(byte)HID_KEYBOARD_CODE.KEY_Q,              0},                              // 0x71     q
+            {(byte)HID_KEYBOARD_CODE.KEY_R,              0},                              // 0x72     r
+            {(byte)HID_KEYBOARD_CODE.KEY_S,              0},                              // 0x73     s
+            {(byte)HID_KEYBOARD_CODE.KEY_T,              0},                              // 0x74     t
+            {(byte)HID_KEYBOARD_CODE.KEY_U,              0},                              // 0x75     u
+            {(byte)HID_KEYBOARD_CODE.KEY_V,              0},                              // 0x76     v
+            {(byte)HID_KEYBOARD_CODE.KEY_W,              0},                              // 0x77     w
+            {(byte)HID_KEYBOARD_CODE.KEY_X,              0},                              // 0x78     x
+            {(byte)HID_KEYBOARD_CODE.KEY_Y,              0},                              // 0x79     y
+            {(byte)HID_KEYBOARD_CODE.KEY_Z,              0},                              // 0x7A     z
+            {(byte)HID_KEYBOARD_CODE.KEY_LeftBracket,    L_SHIFT_MODIFIER},               // 0x7B     {
+            {(byte)HID_KEYBOARD_CODE.KEY_Backslash,      L_SHIFT_MODIFIER},               // 0x7C     |
+            {(byte)HID_KEYBOARD_CODE.KEY_RightBracket,   L_SHIFT_MODIFIER},               // 0x7D     }
+            {(byte)HID_KEYBOARD_CODE.KEY_Grave,          L_SHIFT_MODIFIER},               // 0x7E     ~
+            {(byte)HID_KEYBOARD_CODE.KEY_DeleteForward,  0},                              // 0x7F     DELETE
+        };
+
     }
 }
