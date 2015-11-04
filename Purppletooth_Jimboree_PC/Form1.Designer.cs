@@ -45,6 +45,7 @@
             this.pctSystemCheckResult = new System.Windows.Forms.PictureBox();
             this.btnList = new System.Windows.Forms.Button();
             this.btnTestBLEKeyBoardHID = new System.Windows.Forms.Button();
+            this.txtHIDKeyboardData = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgvProfileView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pctSystemCheckResult)).BeginInit();
             this.SuspendLayout();
@@ -225,11 +226,20 @@
             this.btnTestBLEKeyBoardHID.UseVisualStyleBackColor = true;
             this.btnTestBLEKeyBoardHID.Click += new System.EventHandler(this.btnTestBLEKeyBoardHID_Click);
             // 
+            // txtHIDKeyboardData
+            // 
+            this.txtHIDKeyboardData.BackColor = System.Drawing.SystemColors.Window;
+            this.txtHIDKeyboardData.Location = new System.Drawing.Point(118, 550);
+            this.txtHIDKeyboardData.Name = "txtHIDKeyboardData";
+            this.txtHIDKeyboardData.Size = new System.Drawing.Size(399, 22);
+            this.txtHIDKeyboardData.TabIndex = 15;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(818, 584);
+            this.Controls.Add(this.txtHIDKeyboardData);
             this.Controls.Add(this.btnTestBLEKeyBoardHID);
             this.Controls.Add(this.btnList);
             this.Controls.Add(this.pctSystemCheckResult);
@@ -273,6 +283,7 @@
         private System.Windows.Forms.PictureBox pctSystemCheckResult;
         private System.Windows.Forms.Button btnList;
         private System.Windows.Forms.Button btnTestBLEKeyBoardHID;
+        private System.Windows.Forms.TextBox txtHIDKeyboardData;
     }
 }
 
