@@ -1054,8 +1054,6 @@ namespace Purppletooth_Jimboree_PC
             return ack_all_OK;
         }
 
-
-
         private static bool _btnTestBLEKeyBoardHID_Click_running = false;
         private void btnTestBLEKeyBoardHID_Click(object sender, EventArgs e)
         {
@@ -1066,11 +1064,45 @@ namespace Purppletooth_Jimboree_PC
                 btnTestBLEKeyBoardHID.Enabled = false;
                 _btnList_Click_running = true;
 
-                blHIDKDB_Result = SendStringToHIDKeyboard("This is a Book.");
+                if(txtHIDKeyboardData.Text!="")
+                {
+                    blHIDKDB_Result = SendStringToHIDKeyboard(txtHIDKeyboardData.Text);
+                    if (blHIDKDB_Result == true)
+                    {
+                        txtHIDKeyboardData.Text = "";
+                    }
+                }
 
                 _btnTestBLEKeyBoardHID_Click_running = false;
                 btnTestBLEKeyBoardHID.Enabled = true;
             }
+        }
+
+        private void txtHIDKeyboardData_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                Boolean blHIDKDB_Result;
+
+                if (_btnTestBLEKeyBoardHID_Click_running == false)
+                {
+                    btnTestBLEKeyBoardHID.Enabled = false;
+                    _btnList_Click_running = true;
+
+                    if (txtHIDKeyboardData.Text != "")
+                    {
+                        blHIDKDB_Result = SendStringToHIDKeyboard(txtHIDKeyboardData.Text+'\x0d');
+                        if (blHIDKDB_Result == true)
+                        {
+                            txtHIDKeyboardData.Text = "";
+                        }
+                    }
+
+                    _btnTestBLEKeyBoardHID_Click_running = false;
+                    btnTestBLEKeyBoardHID.Enabled = true;
+                }
+            }
+
         }
 
         enum HID_KEYBOARD_CODE
